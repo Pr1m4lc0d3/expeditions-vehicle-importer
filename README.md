@@ -19,6 +19,7 @@ for you:
 | **Tyres** | dead wheel sets swapped for Expeditions ones that fit, matched on scale |
 | **Store artwork** | cards, thumbnails and previews built from one screenshot |
 | **Skins** | extra paint schemes, chrome, and camouflage from a real swatch |
+| **Consoles** | textures built for PlayStation, Xbox and Switch, not just Windows |
 
 It ships no game content, so you'll need your own copy of each game. Three mods
 have been through it so far: a Toyota Tundra, a two-vehicle Jeep pack, and a
@@ -87,8 +88,32 @@ process in order, with each trap sitting at the step where it actually bites you
 | `extract_snowrunner.py` | lifts meshes and textures out of SnowRunner, for tuning-only mods |
 | `dds_to_tga.py` | DDS to TGA, in the row order the engine expects |
 | `vehicle_pak.py` | pak and mesh-container format. The only thing here that writes TGA bytes |
+| `console_build.py` | textures for all six platforms, and a pak for each |
 | `game_paths.py` | finds your installs |
 | `test_texture_format.py` | regression guard on row order, with a negative control |
+
+## Reaching console players
+
+mod.io hosts a separate upload per platform and hands each player the matching
+one. That's why a published mod can list PlayStation, Xbox and Switch while the
+folder on your PC only ever contains `pc.pak`. Build Windows only and you reach
+Windows players.
+
+```
+python console_build.py <skin_root> <out_dir>
+```
+
+That writes six paks: `pc`, `nx64`, `playstation_4`, `playstation_5`,
+`xbox_one`, `xbox_series`. The textures are the real thing, produced by the
+game's own converter, and they genuinely differ per platform: on one 4096-wide
+texture PlayStation 4 and Xbox One come out byte-identical at 354,446 while
+Switch lands at 158,438 against Windows' 349,694.
+
+One honest caveat. The texture generation is measured. The **pak naming is
+inferred** from the Windows convention and from the build-part names in the
+engine's own `os_build_part_manager.cpp`. Confirming it needs one real console
+vehicle mod to inspect, and you can't download one onto a PC. If you have a
+console build to compare against, I'd like to see it.
 
 ## Two things that'll save you time
 
