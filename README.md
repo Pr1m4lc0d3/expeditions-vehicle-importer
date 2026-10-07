@@ -1,26 +1,28 @@
 # Expeditions Vehicle Importer
 
-Drop a SnowRunner truck into Expeditions: A MudRunner Game and it spawns, drives,
-steers, and articulates its suspension perfectly. It's also completely black.
-Body, glass, wheels, all of it.
+**Ports SnowRunner trucks into Expeditions: A MudRunner Game.** Point it at a
+mod and you get a vehicle that renders properly, keeps its bumpers and tyres,
+and sits in the truck store with artwork that looks like it belongs there.
 
-Nothing in the log tells you why, and that turns out to be the pattern for the
-whole job. The two games share one Saber mod format, so the meshes load
-untouched. Every other difference between them fails without saying a word.
+```
+python port_vehicle.py port truck_mod.zip --id 12345 --name "My Truck"
+```
 
-| what you see | what's actually wrong |
+The two games share one Saber mod format, so the meshes come across as they are.
+Everything wrapped around them needs converting, and that's the part this does
+for you:
+
+| | |
 |---|---|
-| the truck is solid black | its `.pct` textures were encoded by SnowRunner's converter, and Expeditions can't read them |
-| a real livery comes out scrambled | `.tga` rows are stored bottom-up, and writing them top-down flips every texture |
-| no front bumper, no spare wheel | the addon classes live in the donor game, or the mod dropped the socket default |
-| "no suitable devices for this truck" | its tyre sets name wheel classes Expeditions doesn't ship |
-| the fleet tab is blank | a per-vehicle image went where a shared glyph belongs |
-| the card hangs over its border | the image is 380×110 in a widget that's 4:1 |
+| **Textures** | re-encoded with the game's own converter, so the truck isn't a black silhouette |
+| **Accessories** | bumpers, side steps and spare wheels put back, including the ones that live in SnowRunner |
+| **Tyres** | dead wheel sets swapped for Expeditions ones that fit, matched on scale |
+| **Store artwork** | cards, thumbnails and previews built from one screenshot |
+| **Skins** | extra paint schemes, chrome, and camouflage from a real swatch |
 
-Every one of those cost me at least an evening. The black truck cost two days.
-This repo is the tools and the write-ups, so it costs you an afternoon instead.
-
-It ships no game content. You'll need your own copy of each game.
+It ships no game content, so you'll need your own copy of each game. Three mods
+have been through it so far: a Toyota Tundra, a two-vehicle Jeep pack, and a
+1969 Bronco.
 
 ## Install
 
