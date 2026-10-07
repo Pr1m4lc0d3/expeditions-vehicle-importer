@@ -59,6 +59,33 @@ under 15 mean error against a known source image, and every byte offset in the
 file scores about 66, which is noise. `--extract-textures` also returns nothing
 useful. You do not need to decode anything — you re-encode instead.
 
+## First check whether you need to re-encode at all
+
+Not every mod you download is SnowRunner-encoded. Some are already Expeditions
+mods, and some have been converted before you got them — and re-encoding one of
+those from generated flat colours would **destroy the artist's livery** to fix a
+problem it does not have.
+
+**measured** You can tell without launching anything, because **the two encoders differ by a
+constant 10 bytes on the same source**:
+
+| texture | SnowRunner | Expeditions |
+|---|---|---|
+| `rim_scout_narrow_1__d_a` | 349,712 | 349,702 |
+| `rim_scout_narrow_1__n_d` | 1,398,296 | 1,398,286 |
+| `tire_scout_narrow_3__d_a` | 699,232 | 699,222 |
+
+So file size alone classifies a `.pct`, given a reference set from each game.
+The game's own sample mod provides the Expeditions set for free.
+
+On one 111-texture mod this showed 98 exact Expeditions matches, 2 more sitting
+at SnowRunner-minus-10, 11 `_uncmp` variants in a separate format class, and
+**zero** SnowRunner-encoded files. The entire re-encode step was skipped and the
+author's artwork was left untouched.
+
+Do not skip this check because the header looks right. The container header is
+byte-identical between the games, as above — the payload length is the signal.
+
 ## The fix
 
 Hand Expeditions textures that **its own encoder** produced. The game ships that
@@ -204,71 +231,12 @@ HUD, and fit it to a dark canvas at each size.
 ## Adding skins: camo, chrome, a livery
 
 A colour preset does not only carry three colours. It names a **MaterialOverride**,
-and an override can replace the albedo outright. That is how a truck offers a
-wrap rather than just a repaint — pick the scheme, get the livery.
+and an override can replace the albedo outright, which is how a truck offers a
+wrap rather than just a repaint.
 
-```xml
-<MaterialOverride AlbedoMap="trucks/carroceria_jungle__d.tga"
-                  Name="skin_jungle" TargetMaterialName="carroceria"
-                  TintMap="trucks/carroceria_notint__d.tga" />
-```
-
-```xml
-<CustomizationPreset Id="14" MaterialOverrideName="skin_jungle" TintColor1="..." ... />
-```
-
-Two things make this work properly:
-
-**Give a pattern a tint mask with R=0.** The red channel defines the overall
-paint zone, so an area with no red never tints. A camo or livery then shows
-exactly as painted instead of being recoloured by whatever the preset's tint
-happens to be.
-
-**Mirror the override onto every mesh that has the others.** Addons, bumpers and
-racks carry their own `MaterialOverride` entries. Add the new skin only to the
-body and the body goes camo while the bumpers stay factory. The practical rule
-is: for each mesh, find the materials `skin_00` already targets and add the new
-skin for the same ones.
-
-An override can also change `ShadingMap`, which is how you get chrome — high
-metalness, very low roughness — while still letting the preset tint it, so one
-chrome skin gives you gold, blue and black chrome from three presets.
-
-### Using a real camouflage pattern
-
-A generated pattern is fine; a real one looks better. Wikimedia Commons carries
-clean swatches of military patterns, and **images of U.S. military patterns are
-public domain as works of the U.S. Government** — no attribution, no share-alike,
-safe to redistribute inside a mod. Check the licence on each file: the same
-search also returns CC BY-SA uploads whose terms are awkward for a mod.
-
-A photographed swatch is not a texture. Three things need fixing, and
-`camo_from_source.py` does all of them:
-
-**The lighting gradient.** Any photographed fabric is brighter on one side.
-Divide by a heavily blurred copy of itself and re-centre on the mean, or the
-pattern reads as dirty across one flank of the vehicle.
-
-**The edges do not meet.** Offset the image by half in both axes and blend the
-cross seam that exposes. Mirror-tiling is also seamless but produces obvious
-symmetry, which camouflage shows badly.
-
-**The scale is wrong.** A swatch photographed at life size is far too coarse once
-wrapped onto a body panel. Tile it two or three times across the texture.
-
-> **⚠ A hue shift keeps the original lightness**
->    Recolouring a desert pattern to woodland by rotating hue gives a pale mint
-> green, because desert tan is light and the shift preserves that. Pull the
-> value down to about 0.6 and raise saturation as well.
-
-> **ℹ Gloss lives in the shading map, not the colour**
->    `ShadingMap` is R metalness, G roughness, B ambient occlusion. A flat
-> roughness around 160 looks matte and makes every colour look cheap;
-> automotive paint wants roughly 40-60. If your colours look flat, that is the
-> first thing to check.
-
-`make_truck_skins.py` generates the textures and `add_truck_skins.js` injects the
-overrides and rebuilds the preset list.
+That, tint masks, chrome via the shading map, and turning a photographed
+camouflage swatch into a tiling texture are all in
+[Skins and paint](skins-and-paint.md).
 
 ## The errors you can ignore
 

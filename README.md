@@ -103,10 +103,17 @@ There is one now, and `test_texture_format.py` fails if another appears.
 ## Documentation
 
 * **[docs/runbook.md](docs/runbook.md)** — the whole port in order. Start here.
+* [docs/why-trucks-go-black.md](docs/why-trucks-go-black.md) — the texture
+  encoding problem in full, the eighteen things that are *not* causing it, and
+  how to tell whether you need to re-encode at all.
+* [docs/accessories-and-tyres.md](docs/accessories-and-tyres.md) — bumpers, side
+  steps, spare wheels and tyre sets: what a port loses to the donor game.
 * [docs/artwork.md](docs/artwork.md) — every image field, its size, which must be
   cut-outs, and how to compose the screenshot.
-* [docs/why-trucks-go-black.md](docs/why-trucks-go-black.md) — the texture
-  encoding problem in full, and the eighteen things that are *not* causing it.
+* [docs/skins-and-paint.md](docs/skins-and-paint.md) — material overrides, tint
+  masks, chrome, and camouflage from a real swatch.
+* [docs/diagnosing.md](docs/diagnosing.md) — what to read when there is no error,
+  and why the evidence is gone if you relaunch.
 
 ## Credits and scope
 
