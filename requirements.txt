@@ -1,0 +1,8 @@
+# Core: pak reading/writing, texture encoding, analysis.
+Pillow>=10.0
+numpy>=1.24
+
+# Artwork only. vehicle_ui.py needs these to matte a vehicle out of a
+# screenshot; everything else in the toolkit runs without them.
+rembg>=2.0.50
+scipy>=1.10

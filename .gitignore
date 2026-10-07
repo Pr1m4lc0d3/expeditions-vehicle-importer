@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+# Never commit game or mod content: paks, textures, meshes, saves.
+*.pak
+*.pct
+*.tga
+*.dds
+*.dat
+*.zip
+_port/
+_built/
+_download/
+_convscratch/
+palette.json
