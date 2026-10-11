@@ -21,9 +21,11 @@ for you:
 | **Skins** | extra paint schemes, chrome, and camouflage from a real swatch |
 | **Consoles** | textures built for PlayStation, Xbox and Switch, not just Windows |
 
-It ships no game content, so you'll need your own copy of each game. Three mods
-have been through it so far: a Toyota Tundra, a two-vehicle Jeep pack, and a
-1969 Bronco.
+It ships no game content. **You need Expeditions. You do not need SnowRunner**
+to port a mod you downloaded, because the mod zip carries its own meshes and
+textures. SnowRunner is only required when the mod leans on its base game: see
+*Do I need SnowRunner?* below. Three mods have been through it so far: a Toyota
+Tundra, a two-vehicle Jeep pack, and a 1969 Bronco.
 
 ## Personal use only. Read this before you upload anything.
 
@@ -64,7 +66,21 @@ set EXPEDITIONS_DIR=D:\Games\ExpeditionsAMudRunnerGame
 set SNOWRUNNER_DIR=D:\Games\SnowRunner
 ```
 
-You only need SnowRunner if you're porting from it.
+### Do I need SnowRunner?
+
+**For a normal port, no.** You download a truck from mod.io without owning the
+game it was made for, and the zip contains everything the port needs. The
+converter that does the re-encoding ships with Expeditions, not SnowRunner.
+
+SnowRunner has to be installed for exactly two jobs, and both are optional:
+
+| | |
+|---|---|
+| `restore_addons.py` | bumpers, side steps and spare wheels that live in SnowRunner's own files rather than in the mod |
+| `extract_snowrunner.py` | tuning-only mods, which ship class XML and reuse base-game meshes and textures |
+
+If a port comes out missing its accessories, or `analyze` reports a mod with no
+meshes of its own, that is when you need the game. Not before.
 
 ## Use
 
