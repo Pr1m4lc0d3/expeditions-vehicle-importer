@@ -29,6 +29,12 @@ camo_from_source.py, all usable on their own.
 
 Then launch the game and look at the truck. See `troubleshooting` in the guide
 if it is still black.
+
+PERSONAL USE ONLY. This ports trucks into YOUR game. It is not a way to
+republish somebody else's work, and that use is not endorsed. A SnowRunner
+truck belongs to whoever built it, and only that author has permission to
+publish a port of it. If that is you, you are encouraged to. If it is not,
+keep the port on your own machine.
 """
 
 from __future__ import annotations

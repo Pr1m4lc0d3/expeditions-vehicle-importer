@@ -25,6 +25,19 @@ It ships no game content, so you'll need your own copy of each game. Three mods
 have been through it so far: a Toyota Tundra, a two-vehicle Jeep pack, and a
 1969 Bronco.
 
+## Personal use only. Read this before you upload anything.
+
+**This tool exists to get trucks into your own game. It is not a way to
+republish other people's work, and I don't endorse using it that way.**
+
+A SnowRunner truck belongs to whoever built it. **Only the original author has
+permission to publish a port of their own vehicle.** If that's you, I'd
+genuinely encourage it, and this is here to make it straightforward. Bring your
+work across.
+
+If it isn't you, keep the port on your own machine. Asking the author first and
+crediting them is not a courtesy, it's the condition.
+
 ## Install
 
 ```
@@ -168,6 +181,14 @@ Written against Expeditions: A MudRunner Game and SnowRunner, both Saber
 Interactive. Unaffiliated with Saber and with Focus Entertainment. Ships no game
 content and redistributes nobody's mod.
 
-Porting someone else's work is their call, not yours. Ask first, and credit them.
+**Porting someone else's work is their call, not yours.** Only the original
+author has permission to publish a port of their vehicle. See *Personal use
+only* above; it is the condition, not a suggestion.
 
 MIT licensed. See [LICENSE](LICENSE).
+
+## Support this
+
+Free, and it stays free. Saber documented almost none of this and then ended
+support for the game, so every trap in these docs was found the slow way. If it
+saved you an afternoon, a dollar covers it: **https://ko-fi.com/ryanheltemes**
