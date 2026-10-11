@@ -203,6 +203,25 @@ only* above; it is the condition, not a suggestion.
 
 MIT licensed. See [LICENSE](LICENSE).
 
+## Why this exists
+
+Saber walked away from this game and from the people who bought it. I'm not
+going to.
+
+Look at the gap: **SnowRunner has 533 community maps. Expeditions has ten.** Of
+its 177 public mods, 144 are vehicles. The number of real custom base modules is
+zero. That isn't for lack of interest, it's that everything outside a vehicle
+swap took weeks of reverse engineering before a single file would load, and the
+studio that could have written it down never did.
+
+People buy these games for the modding. That's the main attraction, it's what
+the community was promised at purchase, and being abandoned doesn't cancel the
+promise. It just means somebody else has to do the work.
+
+So every format gets written down and published free, so the next person starts
+from something instead of nothing. The goal is a community that can build
+whatever it wants, the way SnowRunner and MudRunner players always could.
+
 ## Support this
 
 Free, and it stays free. Saber documented almost none of this and then ended
