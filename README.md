@@ -110,6 +110,8 @@ process in order, with each trap sitting at the step where it actually bites you
 | | |
 |---|---|
 | `port_vehicle.py` | the port itself: analyse, re-encode, repack, install |
+| `port_sounds.py` | gives a ported truck its engine back. Runs automatically on install |
+| `protect_mods.ps1` | stops the mod.io client deleting locally-installed ports |
 | `restore_addons.py` | gives a truck back the bumpers, side steps and spare wheel it lost |
 | `vehicle_ui.py` | store and garage artwork from a screenshot. `--howto` explains the shot |
 | `vehicle_skins.py` | extra paint schemes via `MaterialOverride` and a preset rebuild |
@@ -156,6 +158,37 @@ One file owns the TGA format, and that's deliberate. Row order is the bug that
 costs days: invisible on a flat colour and on tiled camo, catastrophic on a real
 UV atlas. Eight separate writers existed here once, and fixing one of them left
 seven. There's one now, and `test_texture_format.py` fails if another shows up.
+
+## Your ported truck will be silent, and nothing will tell you
+
+A port carries SnowRunner's truck XML across unchanged, so its `Sound="..."`
+references still name SnowRunner banks — `trucks/jeep_cj7/...`. Expeditions has
+40 truck sound banks and none of those is among them. Every reference resolves
+to nothing, the XML is perfectly well formed, and the vehicle makes no noise at
+all. Three vehicles shipped that way here before anyone noticed.
+
+`port_sounds.py` fixes it and `install()` runs it on every port, so you get this
+for free. To check or repair an existing mod by hand:
+
+```
+python port_sounds.py "<mod folder>"            # audit, changes nothing
+python port_sounds.py --apply "<mod folder>"    # convert and install
+```
+
+It pulls the original audio out of SnowRunner, converts it, ships it inside your
+`pc.pak` and repoints the references. Two things worth knowing:
+
+**Those `.pcm` files are not raw PCM.** They're RIFF/WAVE holding MS ADPCM at
+4 bits. Read one as linear 16-bit and you get a lag-1 correlation of about
+-0.03, which is noise — real audio sits near +0.9. The conversion target is
+PCM, mono, 48 kHz, 16-bit, which is what the one mod already proven to have
+working sound uses.
+
+**Don't put sound in the engine's own `[sound]/` namespace.** That system runs
+off `sound.sound_list`, a bare length-prefixed list of paths, and a mod can't
+add to it. A file that isn't in that index doesn't exist to the game. Ship
+`.wav` under `sounds/<folder>/` in your `pc.pak` instead — that's what every
+mod with working audio does.
 
 ## Documentation
 

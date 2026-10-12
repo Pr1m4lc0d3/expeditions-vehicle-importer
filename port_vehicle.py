@@ -374,7 +374,28 @@ def install(mod_id: str, main_pak: str, pc_pak: str, name: str) -> str:
     with open(os.path.join(dest, "modio.json"), "w", encoding="utf-8") as f:
         json.dump(meta, f, indent=1)
     register(mod_id)
+    install_sounds(dest)
     return dest
+
+
+def install_sounds(dest: str) -> None:
+    """Give the vehicle its engine back, every time, at the one install site.
+
+    A port keeps SnowRunner's Sound= references and Expeditions has none of
+    those banks, so a freshly installed vehicle is SILENT and nothing says so.
+    That shipped three times before anyone noticed. See port_sounds.py.
+
+    ⛔ A failure here must be LOUD. The vehicle still drives, so a quiet skip
+    reads as success and the next port is silent again.
+    """
+    try:
+        import port_sounds
+        n = port_sounds.repair(dest, apply=True)
+        if n:
+            log(f"     sounds: converted {n} file(s) from SnowRunner")
+    except Exception as exc:                                  # noqa: BLE001
+        log(f"     ! SOUND REPAIR FAILED -- the vehicle will be SILENT: {exc}")
+        log("       run:  python port_sounds.py \"%s\"  to see what is missing" % dest)
 
 
 def register(mod_id: str) -> bool:
