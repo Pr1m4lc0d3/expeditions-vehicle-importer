@@ -375,7 +375,23 @@ def install(mod_id: str, main_pak: str, pc_pak: str, name: str) -> str:
         json.dump(meta, f, indent=1)
     register(mod_id)
     install_sounds(dest)
+    install_features(dest)
     return dest
+
+
+def install_features(dest: str) -> None:
+    """Gear slots, inventory limit and garage tabs: the Expeditions systems a
+    SnowRunner truck has never heard of. See expeditions_features.py.
+
+    ⛔ Loud on failure, like sounds: a truck that drives but can't carry a
+    battery looks finished until the first expedition.
+    """
+    try:
+        import expeditions_features
+        expeditions_features.repair(dest, apply=True)
+    except BaseException as exc:                              # noqa: BLE001
+        log(f"     ! EXPEDITIONS FEATURES FAILED -- no gear slots on this truck: {exc}")
+        log("       run:  python expeditions_features.py \"%s\"  to see what is missing" % dest)
 
 
 def install_sounds(dest: str) -> None:

@@ -111,6 +111,8 @@ process in order, with each trap sitting at the step where it actually bites you
 |---|---|
 | `port_vehicle.py` | the port itself: analyse, re-encode, repack, install |
 | `port_sounds.py` | gives a ported truck its engine back. Runs automatically on install |
+| `expeditions_features.py` | inventory limit, supplies cameras, metal detector, garage tabs, and the gear carrier you choose. Runs automatically on install |
+| `expedition_racks.py` | borrows a stock truck's rack, gear and drone carrier, when you choose one for a vehicle |
 | `protect_mods.ps1` | stops the mod.io client deleting locally-installed ports |
 | `restore_addons.py` | gives a truck back the bumpers, side steps and spare wheel it lost |
 | `vehicle_ui.py` | store and garage artwork from a screenshot. `--howto` explains the shot |
@@ -190,9 +192,56 @@ add to it. A file that isn't in that index doesn't exist to the game. Ship
 `.wav` under `sounds/<folder>/` in your `pc.pak` instead — that's what every
 mod with working audio does.
 
+## Your ported truck can't carry gear, and nothing will tell you that either
+
+SnowRunner has no expeditions, so a ported truck arrives with none of the
+systems they run on. It has no `<Inventory MaxLimit>`, so it has no gear
+capacity, and it has no consumable addons, so there's no battery, fuel can,
+spare parts or spare wheel to load. Its accessories are filed under
+`Category="frame_addons"`, a tab stock scouts don't have, so the garage
+doesn't show them either.
+
+`expeditions_features.py` adds what's missing, using stock values for the
+truck's class, and `install()` runs it on every port. To check or repair an
+existing mod by hand:
+
+```
+python expeditions_features.py "<mod folder>"            # audit, changes nothing
+python expeditions_features.py --apply "<mod folder>"    # patch and write
+```
+
+It also adds the locked `supplies_*` cameras stock trucks use and a
+metal-detector mount on scouts.
+
+**One thing it leaves to you: what carries the gear.** Every one of the game's
+471 batteries, fuel cans and parts boxes names the rack, bumper or box it sits
+on, and gear without one shows up in the garage as an ordinary upgrade. Which
+carrier suits a vehicle, where it sits and what holds it up are that vehicle's
+call, so the importer never picks one. It tells you instead:
+
+```
+! no gear carrier: batteries, fuel and parts need a rack to sit on.
+```
+
+[docs/expedition-gear.md](docs/expedition-gear.md) walks the choice. In short,
+`expedition_racks.py` borrows a stock truck's rack, gear models and drone
+carrier straight out of your own game files. You compare several in the garage,
+move the one you like into place, and the choice is saved inside the vehicle so
+later runs keep it:
+
+```
+python expeditions_features.py --apply --racks don --offset don=-0.21,1.01,0 "<mod folder>"
+```
+
+If a borrowed rack's feet land on nothing, the guide covers building a small
+accessory of your own for them to stand on, and making the rack require it.
+
 ## Documentation
 
 * [docs/runbook.md](docs/runbook.md) is the whole port in order. Start there.
+* [docs/expedition-gear.md](docs/expedition-gear.md) covers giving a port
+  somewhere to carry batteries, fuel and spare parts: borrowing a stock rack,
+  placing it, drone carriers, and mounts of your own.
 * [docs/why-trucks-go-black.md](docs/why-trucks-go-black.md) covers the texture
   encoding problem, the eighteen things that aren't causing it, and how to tell
   whether you need to re-encode at all.
